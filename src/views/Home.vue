@@ -1,17 +1,18 @@
 <template>
   <div class="home">
-    <h1>Todos</h1>
+    <TodoList/>
   </div>
 </template>
 
 <script>
 import router from '../router/index.js'
+import TodoList from '../components/TodoList.vue'
 
 export default {
   name: "home",
 
   components: {
-
+    TodoList
   },
 
   methods: {
