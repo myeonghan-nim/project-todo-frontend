@@ -1,21 +1,36 @@
 <template>
   <div class="home">
-
-    <img alt="Vue logo" src="../assets/logo.png">
-    
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-
+    <h1>Todos</h1>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import router from '../router/index.js'
 
 export default {
-  name: 'home',
+  name: "home",
+
   components: {
-    HelloWorld
+
+  },
+
+  methods: {
+    checkLoggedIn() {
+      this.$session.start()
+
+      if (!this.$session.has('jwt')) {
+        // redirect to login page
+        router.push('/login')
+      }
+    }
+  },
+
+  mounted: function() {
+    this.checkLoggedIn()
   }
 }
 </script>
+
+<style>
+
+</style>
