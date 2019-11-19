@@ -77,3 +77,56 @@ export default {
 }
 </script>
 ```
+
+### CRUD logic in Front-end
+
+```vue
+// Create
+createTodo(title) {
+  this.$session.start()
+  const token = this.$session.get('jwt')
+  const decodedToken = jwtDecode(token)
+  const userId = decodedToken.user_id
+
+  const requestHeader = {
+    headers: {
+      Authorization: 'JWT ' + token
+    }
+  }
+
+  const requestForm = new FormData()
+
+  requestForm.append('user', userId)
+  requestForm.append('title', title)
+
+  axios.post('http://localhost:8000/api/v1/todos/', requestForm, requestHeader)
+    .then((r) => {
+      this.todos.push(r.data)
+    })
+    .catch((e) => {console.log(e)})
+}
+
+// Read
+getTodos() {
+  this.$session.start()
+  const token = this.$session.get('jwt')
+  const decodedToken = jwtDecode(token)
+  const userId = decodedToken.user_id
+
+  const requestHeader = {
+    headers: {
+      Authorization: 'JWT ' + token
+    }
+  }
+
+  axios.get(`http://localhost:8000/api/v1/users/${userId}/`, requestHeader)
+    .then((r) => {
+      this.todos = r.data.todo_set
+    })
+    .catch((e) => {console.log(e)})
+}
+```
+
+> Update and Delete logic is similar with Create
+>
+> so, make them yourselves ^^7
