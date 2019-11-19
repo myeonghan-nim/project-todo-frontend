@@ -7,6 +7,10 @@
 
     <div class="login-div col-6 offset-3" v-else>
 
+      <div class="error-list alert alert-danger" v-if="errors.length">
+        <div class="my-1" v-for="(error, idx) in errors" :key="idx">{{error}}</div>
+      </div>
+
       <div class="form-group">
         <label for="id">ID</label>
         <input type="text" class="form-control" id="id" v-model="credential.username">
@@ -37,26 +41,39 @@ export default {
         username: '',
         password: ''
       },
-      loading: false
+      loading: false,
+      errors: []
     }
   },
 
   methods: {
     login() {
-      axios.post('http://localhost:8000/api-token-auth/', this.credential)
-        .then((r) => {
-          this.loading = true
+      if (this.checkForm()) {
+        axios.post('http://localhost:8000/api-token-auth/', this.credential)
+          .then((r) => {
+            this.loading = true
+  
+            this.$session.start()
+            this.$session.set('jwt', r.data.token)
+  
+            router.push('/')
+          })
+          .catch((e) => {
+            this.loading = true
+  
+            console.log(e)
+          })
+      }
+    },
 
-          this.$session.start()
-          this.$session.set('jwt', r.data.token)
+    checkForm() {
+      this.errors = []
+      if (this.credential.password.length < 8) {this.errors.push('length of password must be more than 8 letters.')}
+      if (!this.credential.username) {this.errors.push('enter id.')}
 
-          router.push('/')
-        })
-        .catch((e) => {
-          this.loading = true
-
-          console.log(e)
-        })
+      if (this.errors.length === 0) {
+        return true
+      }
     }
   }
 }
