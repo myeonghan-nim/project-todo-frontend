@@ -27,19 +27,22 @@ export default {
 
   data() {
     return {
-      isAuthenticated: this.$session.has('jwt')
+      // isAuthenticated: this.$session.has('jwt')
+      isAuthenticated: this.$store.getters.isAuthenticated
     }
   },
 
   methods: {
     logout() {
-      this.$session.destroy()
+      // this.$session.destroy()
+      this.$store.dispatch('logout')
       this.$router.push('/login')
     }
   },
 
   updated() {
-    this.isAuthenticated = this.$session.has('jwt')
+    // this.isAuthenticated = this.$session.has('jwt')
+    this.isAuthenticated = this.$store.getters.isAuthenticated
   }
 }
 </script>
