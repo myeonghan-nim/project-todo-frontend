@@ -11,8 +11,10 @@ import router from '../router/index.js'
 import TodoList from '../components/TodoList.vue'
 import TodoInput from '../components/TodoInput.vue'
 
-import jwtDecode from 'jwt-decode'
+// import jwtDecode from 'jwt-decode'
 import axios from 'axios'
+
+import {mapGetters} from 'vuex'
 
 export default {
   name: "home",
@@ -28,17 +30,26 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters([
+      'isAuthenticated',
+      'requestHeader',
+      'userId',
+    ])
+  },
+
   methods: {
     checkLoggedIn() {
-      this.$session.start()
+      // this.$session.start()
 
-      if (!this.$session.has('jwt')) {
+      if (!this.isAuthenticated) {
         // redirect to login page
         router.push('/login')
       }
     },
 
     getTodos() {
+      /*
       this.$session.start()
       const token = this.$session.get('jwt')
       const decodedToken = jwtDecode(token)
@@ -49,8 +60,9 @@ export default {
           Authorization: 'JWT ' + token
         }
       }
+      */
 
-      axios.get(`http://localhost:8000/api/v1/users/${userId}/`, requestHeader)
+      axios.get(`http://localhost:8000/api/v1/users/${this.userId}/`, this.requestHeader)
         .then((r) => {
           this.todos = r.data.todo_set
         })
@@ -58,6 +70,7 @@ export default {
     },
 
     createTodo(title) {
+      /*
       this.$session.start()
       const token = this.$session.get('jwt')
       const decodedToken = jwtDecode(token)
@@ -68,13 +81,14 @@ export default {
           Authorization: 'JWT ' + token
         }
       }
+      */
 
       const requestForm = new FormData()
 
-      requestForm.append('user', userId)
+      requestForm.append('user', this.userId)
       requestForm.append('title', title)
 
-      axios.post('http://localhost:8000/api/v1/todos/', requestForm, requestHeader)
+      axios.post('http://localhost:8000/api/v1/todos/', requestForm, this.requestHeader)
         .then((r) => {
           this.todos.push(r.data)
         })
