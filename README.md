@@ -1,4 +1,4 @@
-# todo-front
+# README
 
 ## Project setup
 
@@ -28,7 +28,7 @@ npm run lint
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### Login logic with Vue
+## Login logic with Vue
 
 ```vue
 <template>
@@ -78,7 +78,7 @@ export default {
 </script>
 ```
 
-### CRUD logic in Front-end
+## CRUD logic in front-end
 
 ```vue
 // Create
@@ -127,6 +127,4 @@ getTodos() {
 }
 ```
 
-> Update and Delete logic is similar with Create
->
-> so, make them yourselves ^^7
+> update and delete logic is similar with create, so make them yourselves ^^7
