@@ -6,30 +6,24 @@
 </template>
 
 <script>
+import axios from 'axios'
 import router from '../router/index.js'
+import {mapGetters} from 'vuex'
 
 import TodoList from '../components/TodoList.vue'
 import TodoInput from '../components/TodoInput.vue'
 
-// import jwtDecode from 'jwt-decode'
-import axios from 'axios'
-
-import {mapGetters} from 'vuex'
-
 export default {
-  name: "home",
-
+  name: "Home",
   components: {
     TodoList,
     TodoInput
   },
-
   data() {
     return {
       todos: []
     }
   },
-
   computed: {
     ...mapGetters([
       'isAuthenticated',
@@ -37,65 +31,32 @@ export default {
       'userId',
     ])
   },
-
   methods: {
     checkLoggedIn() {
-      // this.$session.start()
-
       if (!this.isAuthenticated) {
-        // redirect to login page
         router.push('/login')
       }
     },
-
     getTodos() {
-      /*
-      this.$session.start()
-      const token = this.$session.get('jwt')
-      const decodedToken = jwtDecode(token)
-      const userId = decodedToken.user_id
-
-      const requestHeader = {
-        headers: {
-          Authorization: 'JWT ' + token
-        }
-      }
-      */
-
-      axios.get(`http://localhost:8000/api/v1/users/${this.userId}/`, this.requestHeader)
+      axios.get(`http://localhost:8000/api/v1/user/${this.userId}/`, this.requestHeader)
         .then((r) => {
           this.todos = r.data.todo_set
         })
         .catch((e) => {console.log(e)})
     },
-
     createTodo(title) {
-      /*
-      this.$session.start()
-      const token = this.$session.get('jwt')
-      const decodedToken = jwtDecode(token)
-      const userId = decodedToken.user_id
-
-      const requestHeader = {
-        headers: {
-          Authorization: 'JWT ' + token
-        }
-      }
-      */
-
       const requestForm = new FormData()
 
       requestForm.append('user', this.userId)
       requestForm.append('title', title)
 
-      axios.post('http://localhost:8000/api/v1/todos/', requestForm, this.requestHeader)
+      axios.post('http://localhost:8000/api/v1/todo/', requestForm, this.requestHeader)
         .then((r) => {
           this.todos.push(r.data)
         })
         .catch((e) => {console.log(e)})
     }
   },
-
   mounted: function() {
     this.checkLoggedIn()
     this.getTodos()
@@ -104,5 +65,4 @@ export default {
 </script>
 
 <style>
-
 </style>

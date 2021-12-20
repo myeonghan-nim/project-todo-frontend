@@ -19,20 +19,17 @@ const actions = {
   }
 }
 
-// computed
 const getters = {
   isAuthenticated(state) {
     return state.token ? true : false
   },
-
   requestHeader(state) {
     return {
       headers: {
-        Authorization: 'JWT ' + state.token
+        Authorization: 'Bearer ' + state.token
       }
     }
   },
-
   userId(state) {
     return state.token ? jwtDecode(state.token).user_id : null
   }

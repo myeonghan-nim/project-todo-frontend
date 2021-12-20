@@ -1,10 +1,7 @@
 <template>
   <div class="login">
-
-    <h1>Here is Login</h1>
-
+    <h1>Login</h1>
     <LoginForm/>
-
   </div>
 </template>
 
@@ -13,7 +10,6 @@ import LoginForm from '../components/LoginForm.vue'
 
 export default {
   name: 'Login',
-  
   components: {
     LoginForm
   }
@@ -21,5 +17,4 @@ export default {
 </script>
 
 <style>
-
 </style>
